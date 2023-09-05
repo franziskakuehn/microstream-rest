@@ -1,0 +1,70 @@
+plugins {
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("io.micronaut.application") version "4.0.0-M4"
+}
+
+version = "0.1"
+group = "orange.business.jhub"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    runtimeOnly("org.yaml:snakeyaml")
+    runtimeOnly("ch.qos.logback:logback-classic")
+
+    implementation("io.micronaut.microstream:micronaut-microstream")
+    implementation("io.micronaut.microstream:micronaut-microstream-annotations")
+    developmentOnly("io.micronaut.microstream:micronaut-microstream-rest")
+    implementation("io.micronaut:micronaut-management")
+    implementation("io.micronaut.micrometer:micronaut-micrometer-core")
+    implementation("io.micronaut.validation:micronaut-validation")
+    implementation("io.micronaut.serde:micronaut-serde-jackson")
+
+
+    testImplementation("org.junit.jupiter:junit-jupiter-params")
+    testImplementation("io.micronaut:micronaut-http-client")
+
+    implementation("software.amazon.awssdk:s3")
+    implementation("io.micronaut.aws:micronaut-aws-sdk-v2")
+    implementation("one.microstream:microstream-afs-aws-s3")
+
+    implementation("io.swagger.core.v3:swagger-annotations")
+
+    annotationProcessor("io.micronaut:micronaut-management")
+    annotationProcessor("io.micronaut.openapi:micronaut-openapi")
+
+    annotationProcessor("io.micronaut.microstream:micronaut-microstream-annotations")
+    annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    annotationProcessor("io.micronaut.validation:micronaut-validation-processor")
+}
+
+application {
+    mainClass.set("orange.business.jhub.Application")
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
+}
+
+graalvmNative.toolchainDetection = false
+micronaut {
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("orange.business.jhub.*")
+    }
+}
+
+
+
+// configurations.all {
+//     resolutionStrategy.dependencySubstitution {
+//         substitute(module("io.micronaut:micronaut-jackson-databind"))
+//             .using(module("io.micronaut.serde:micronaut-serde-jackson:1.5.3"))
+//     }
+// }
+
